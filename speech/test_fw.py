@@ -1,3 +1,5 @@
+#https://github.com/SYSTRAN/faster-whisper
+
 from faster_whisper import WhisperModel
 
 #model_size = "large-v3"
