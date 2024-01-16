@@ -1,22 +1,33 @@
-import torch
 from TTS.api import TTS
+import soundfile as sf
 
-device = "cpu"
-
-text = """Das ist ein Test Text Amenakoi Papuschi Kuraz"""
-
-tts = TTS(model_name="tts_models/de/thorsten/tacotron2-DDC", progress_bar=True)
-
-tts.tts_to_file(text=text, file_path="output.wav")
-
-"""speaker_wav = "/Users/davidschaupp/Documents/voice_chatbot/speech/output.wav"
-
-tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
-
-text = "Since this model is multi-lingual voice cloning model, we must set the target speaker_wav and language"
-
-#tts.tts_to_file(text=text, speaker_wav=speaker_wav, language="en", file_path="tts_output.wav")
-
-wav = tts.tts(text=text, speaker_wav=speaker_wav, language="en")"""
+class TextToSpeech:
+    def __init__(self, device="cuda", model_name="tts_models/en/ljspeech/vits"):
+        self.device = device
+        self.TTS = TTS(model_name=model_name, progress_bar=True).to(self.device)
 
 
+    def save_wav(self, wav, output_path="data/output.wav"):
+        """
+        Save the .wav file to output path
+        """
+        sf.write(output_path, wav, samplerate=22050)
+
+    def text_to_speech(self, text):
+        """
+        Converts text to speech using a specified TTS model.
+        """
+        wav = self.TTS.tts(text=text)
+        return wav
+
+    def voice_cloning(self, text, speaker_wav, language="en", output_path="data/vc_output.wav"):
+        """
+        Clones voice from a given speaker's sample and synthesizes speech from text.
+        """
+        wav = self.TTS.tts(text=text, speaker_wav=speaker_wav, language=language)
+        return wav
+
+"""
+vc_model = "tts_models/multilingual/multi-dataset/xtts_v2"
+tts_model = "tts_models/en/ljspeech/vits"
+"""
