@@ -16,7 +16,7 @@ class AudioTranscriber:
         return response.json()
 
 # Example usage
-if __name__ == "__main__":
+"""if __name__ == "__main__":
     transcriber = AudioTranscriber()
     response = transcriber.transcribe_audio('/Users/davidschaupp/Documents/voice_chatbot/speech/output.wav')
-    print(response["text"])
+    print(response["text"])"""
