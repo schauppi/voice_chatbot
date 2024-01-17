@@ -6,6 +6,8 @@ import logging
 import os
 import io
 import soundfile as sf
+from werkzeug.datastructures import FileStorage
+from io import BytesIO
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -48,16 +50,13 @@ def text_to_speech():
 @app.route('/speech_to_text', methods=['POST'])
 def speech_to_text():
     """
-    Endpoint to convert speech to text. Expects JSON with 'file_path' key.
+    Endpoint to convert speech to text. Expects the audio file in the request's body.
     """
-    data = request.json
-    file_path = data.get('file_path', '')
-
-    if not os.path.exists(file_path):
-        return jsonify({"error": "File not found"}), 404
+    # Convert the request data to a file-like object
+    file = FileStorage(stream=BytesIO(request.data), filename='audio.wav')
 
     try:
-        text_segments = transcriber.transcribe(file_path)
+        text_segments = transcriber.transcribe(file)
         return jsonify({"message": "Success", "transcribed_text": text_segments})
     except Exception as e:
         logging.error(f"Error in speech-to-text conversion: {e}")

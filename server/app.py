@@ -24,7 +24,6 @@ class Frontend:
             if response_json:
                 print(response_json["message"]["content"])
                 self.messages.append({'role': 'assistant', 'content': response_json["message"]["content"]})
-                print(self.messages)
             else:
                 print("Error occurred, no response obtained.")
 

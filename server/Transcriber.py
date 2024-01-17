@@ -1,5 +1,6 @@
 import logging
 from faster_whisper import WhisperModel
+import tempfile
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -21,22 +22,27 @@ class Transcriber:
             logging.error(f"Failed to initialize WhisperModel: {e}")
             raise
 
-    def transcribe(self, file_path):
+    def transcribe(self, file):
         """
         Transcribes the given audio file.
 
         Args:
-            file_path (str): Path to the audio file to be transcribed.
+            file (file-like object): The audio file to be transcribed.
 
         Returns:
             list: A list of transcribed text segments.
         """
         try:
-            segments, info = self.model.transcribe(file_path)
-            logging.info("Successfully transcribed the audio file")
+            # Save the file to a temporary location and transcribe it
+            with tempfile.NamedTemporaryFile(delete=True) as temp:
+                temp.write(file.read())
+                temp.flush()
 
-            text = [segment.text for segment in segments]
-            return text
+                segments, info = self.model.transcribe(temp.name)
+                logging.info("Successfully transcribed the audio file")
+
+                text = [segment.text for segment in segments]
+                return text
         except Exception as e:
             logging.error(f"Failed to transcribe audio: {e}")
             raise
