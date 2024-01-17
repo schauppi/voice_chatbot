@@ -41,4 +41,4 @@ class ChatbotHandler:
             logging.error("No response from server.")
             return None
         self.messages.append({'role': 'assistant', 'content': response_json["message"]["content"]})
-        return response_json["message"]["content"]
+        return response_json["message"]["content"], self.messages
