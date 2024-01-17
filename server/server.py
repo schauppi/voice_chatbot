@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, Response
 from AudioGenerator import TextToSpeech  # Assuming your TTS class is in this file
 from Transcriber import Transcriber    # Assuming your Transcription class is in this file
+from Chatbot import Chatbot
 import logging
 import os
 import io
@@ -17,6 +18,7 @@ try:
     logging.info("Initializing TextToSpeech and Transcriber models...")
     tts = TextToSpeech()       # Assuming TextToSpeech is properly imported
     transcriber = Transcriber() # Assuming Transcriber is properly imported
+    chatbot = Chatbot("http://localhost:11434/api/chat")
     logging.info("Models loaded successfully.")
 except Exception as e:
     logging.error(f"Failed to initialize models: {e}")
@@ -59,6 +61,24 @@ def speech_to_text():
         return jsonify({"message": "Success", "transcribed_text": text_segments})
     except Exception as e:
         logging.error(f"Error in speech-to-text conversion: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/chat', methods=['POST'])
+def chat():
+    """
+    Endpoint to interact with the chat model. Expects JSON with 'messages' key.
+    """
+    data = request.json
+    messages = data.get('messages', [])
+
+    if not messages:
+        return jsonify({"error": "No messages provided"}), 400
+
+    try:
+        response = chatbot.call_model(messages)
+        return jsonify(response)
+    except Exception as e:
+        logging.error(f"Error in chat model communication: {e}")
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':

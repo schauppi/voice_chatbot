@@ -1,45 +1,47 @@
-import requests, json
+import requests
+import json
+import logging
 
-context = [] 
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def generate(prompt, context):
-    r = requests.post('http://localhost:11434/api/generate',
-                     json={
-                         'model': "mistral:latest",
-                         'prompt': prompt,
-                         'context': context,
-                     },
-                     stream=False)
-    r.raise_for_status()
-    return r
+class Chatbot:
+    def __init__(self, url):
+        """
+        Initialize the Server class with a specific URL for model communication.
 
-response = generate("Hello how are you?", [])
-print(json.loads(response))
+        Args:
+            url (str): The URL to which the model requests are sent.
+        """
+        self.url = url
+        logging.info(f"Server initialized with URL: {url}")
 
-"""    response = ""  
+    def call_model(self, messages):
+        """
+        Send a request to the model with the given messages and return the response.
 
-    for line in r.iter_lines():
-        body = json.loads(line)
-        response_part = body.get('response', '')
-        print(response_part)
-        if 'error' in body:
-            raise Exception(body['error'])
+        Args:
+            messages (list): A list of message dictionaries to be sent to the model.
 
-        response += response_part
+        Returns:
+            dict: The JSON response from the model.
 
-        if body.get('done', False):
-            context = body.get('context', [])
-            return response, context
-
-def chat(input, chat_history):
-
-    chat_history = chat_history or []
-
-    global context
-    output, context = generate(input, context)
-
-    chat_history.append((input, output))
-
-    return chat_history
-
-chat_hist = chat("Hello how are you?", [])"""
+        Raises:
+            Exception: If the request to the model fails.
+        """
+        try:
+            data = {"model": "mistral", "messages": messages, "stream": False, "options": {"temperature": 0}}
+            response = requests.post(self.url, data=json.dumps(data))
+            response.raise_for_status()  # Raises HTTPError for bad requests
+            response_text = response.content.decode('utf-8')
+            logging.info("Successfully received response from the model")
+            return json.loads(response_text)
+        except requests.exceptions.HTTPError as e:
+            logging.error(f"HTTP error occurred during model call: {e}")
+            raise
+        except requests.exceptions.RequestException as e:
+            logging.error(f"Error occurred during model call: {e}")
+            raise
+        except Exception as e:
+            logging.error(f"Unexpected error during model call: {e}")
+            raise
