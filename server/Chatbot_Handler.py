@@ -10,7 +10,7 @@ class ChatbotHandler:
     It maintains a list of messages and sends them to the server for processing.
     """
 
-    def __init__(self, server_url):
+    def __init__(self, server_url, context):
         """
         Initialize the ChatbotHandler with the server URL.
         """
