@@ -15,7 +15,7 @@ class ChatbotHandler:
         Initialize the ChatbotHandler with the server URL.
         """
         self.server_url = server_url
-        self.messages = [{'role': 'system', 'content': "You are a helpful pirate assistant"}]
+        self.messages = [{'role': 'system', 'content': context}]
 
     def call_model(self, messages):
         """
