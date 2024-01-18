@@ -1,9 +1,17 @@
-# start whisper server
-In the root directory: 
-cd whisper.cpp && ./server
+# Start ollama api
+```ollama run mistral```
 
-# start llama server
-In the root directory:
+# Adapt config.json
+- Device where Transcription and Audio generation model should be loaded
+- The model from the ollama api
+- Context for the model how they should act like
+- Port where the Flask backend should run
 
-cd llama.cpp && make && ./server
+# Run the backend
+```python voice_chatbot/backend.py --config config.json```
 
+# Run the frontend
+```python voice_chatbot/frontend.py --config config.json```
+
+
+![alt text]()
