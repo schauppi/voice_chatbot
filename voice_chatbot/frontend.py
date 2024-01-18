@@ -41,7 +41,7 @@ class FrontEnd:
             logging.info(f"Generating audio for text: {text}")
             response = requests.post(self.server + "/text_to_speech", json={'text': text})
             response.raise_for_status()
-            with open('output.wav', 'wb') as file:
+            with open('data/output.wav', 'wb') as file:
                 file.write(response.content)
             logging.info("Audio generated successfully")
         except Exception as e:
