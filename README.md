@@ -14,4 +14,4 @@
 ```python voice_chatbot/frontend.py --config config.json```
 
 
-![alt text]()
+![alt text](img/frontend.png)
