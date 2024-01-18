@@ -1,3 +1,6 @@
+# Install Requirements
+```pip install -r requirements.txt```
+
 # Start ollama api
 ```ollama run mistral```
 
