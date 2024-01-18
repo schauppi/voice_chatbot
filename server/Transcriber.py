@@ -40,13 +40,14 @@ class Transcriber:
         Returns:
             list: A list of transcribed text segments.
         """
+        print(file)
         try:
             # Save the file to a temporary location and transcribe it
             with tempfile.NamedTemporaryFile(delete=True) as temp:
                 temp.write(file.read())
                 temp.flush()
 
-                segments = self.model.transcribe(temp.name)
+                segments, info = self.model.transcribe(temp.name)
                 logging.info("Successfully transcribed the audio file")
 
                 text = [segment.text for segment in segments]
