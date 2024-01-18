@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, Response
-from AudioGenerator import TextToSpeech  # Assuming your TTS class is in this file
-from Transcriber import Transcriber    # Assuming your Transcription class is in this file
+from AudioGenerator import TextToSpeech  
+from Transcriber import Transcriber    
 from Chatbot import Chatbot
 import logging
 import os
@@ -9,17 +9,17 @@ import soundfile as sf
 from werkzeug.datastructures import FileStorage
 from io import BytesIO
 
-# Configure logging
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Initialize Flask app
+
 app = Flask(__name__)
 
-# Global instances of TextToSpeech and Transcriber
+
 try:
     logging.info("Initializing TextToSpeech and Transcriber models...")
-    tts = TextToSpeech()       # Assuming TextToSpeech is properly imported
-    transcriber = Transcriber() # Assuming Transcriber is properly imported
+    tts = TextToSpeech()      
+    transcriber = Transcriber() 
     chatbot = Chatbot("http://localhost:11434/api/chat")
     logging.info("Models loaded successfully.")
 except Exception as e:
