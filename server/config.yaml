@@ -1,0 +1,18 @@
+AudioGeneration:
+  model: "tts_models/en/ljspeech/vits"
+  device: "cpu"
+
+Transcription:
+  model: "base.en"
+  device: "cpu"
+
+Chatbot:
+  url: "http://localhost:11434/api/chat"
+  model: "mistral"
+  context: "You are a helpful pirate assistant"
+
+ServerPort:
+  port: "5555"
+
+Frontend:
+  server_url: "http://127.0.0.1"

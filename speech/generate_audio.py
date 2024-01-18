@@ -31,3 +31,8 @@ class TextToSpeech:
 vc_model = "tts_models/multilingual/multi-dataset/xtts_v2"
 tts_model = "tts_models/en/ljspeech/vits"
 """
+"""
+tts_model = "tts_models/en/ljspeech/vits"
+tts = TextToSpeech()
+wav = tts.text_to_speech("Hello how are you papuschi kuraz")
+tts.save_wav(wav)"""
