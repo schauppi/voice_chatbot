@@ -7,7 +7,7 @@ import tempfile
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class Transcriber:
-    def __init__(self, config_file="config.yaml"):
+    def __init__(self, config_file):
         """
         Initialize the Transcriber class with a WhisperModel.
 

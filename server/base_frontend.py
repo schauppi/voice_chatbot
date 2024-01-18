@@ -22,7 +22,7 @@ class FrontEnd:
         context = config["Chatbot"]["context"]
 
         self.server = server
-        self.chatbot_handler = ChatbotHandler(self.server + "/chat",context)
+        self.chatbot_handler = ChatbotHandler(self.server + "/chat", context)
 
         logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
