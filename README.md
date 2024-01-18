@@ -12,3 +12,6 @@
 
 # Run the frontend
 ```python voice_chatbot/frontend.py --config config.json```
+
+
+![alt text]()
