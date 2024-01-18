@@ -20,7 +20,11 @@ class Transcriber:
 
         model_name = config["Transcription"]["model"]
         device = config["Transcription"]["device"]
-        compute_type = config["Transcription"]["compute_type"]
+
+        if device == "cuda":
+            compute_type = "int8_float16"
+        else:
+            compute_type = "int8"
 
         try:
             self.model = WhisperModel(model_name, device=device, compute_type=compute_type)

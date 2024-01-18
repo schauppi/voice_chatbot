@@ -9,11 +9,15 @@ import soundfile as sf
 from werkzeug.datastructures import FileStorage
 from io import BytesIO
 import argparse
+import yaml
 
 parser = argparse.ArgumentParser(description='Process some integers.')
 parser.add_argument('--config', type=str, help='The path to the config file')
 args = parser.parse_args()
 config_path = args.config
+
+with open(config_path, 'r') as file:
+    config = yaml.safe_load(file)
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -85,6 +89,6 @@ def chat():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=config["ServerPort"]["port"])
 
 
