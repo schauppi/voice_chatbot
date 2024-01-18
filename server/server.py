@@ -22,7 +22,7 @@ app = Flask(__name__)
 
 try:
     logging.info("Initializing TextToSpeech and Transcriber models...")
-    tts = TextToSpeech()      
+    tts = TextToSpeech(config_path)      
     transcriber = Transcriber(config_path) 
     chatbot = Chatbot(config_path)
     logging.info("Models loaded successfully.")

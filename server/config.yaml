@@ -1,6 +1,6 @@
-whisperRecognition:
-  modelPath: "whisper/base.en.pt"
-  lang: "en"
+AudioGeneration:
+  model: "tts_models/en/ljspeech/vits"
+  device: "cuda"
 
 Transcription:
   model: "base.en"
@@ -10,3 +10,7 @@ Transcription:
 Chatbot:
   url: "http://localhost:11434/api/chat"
   model: "mistral"
+  context: "You are a helpful pirate assistant"
+
+Frontend:
+  server_url: server="http://127.0.0.1:5000"

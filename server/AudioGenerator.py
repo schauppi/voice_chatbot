@@ -1,26 +1,35 @@
 import logging
 from TTS.api import TTS
 import soundfile as sf
+import yaml
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class TextToSpeech:
-    def __init__(self, device="cuda", model_name="tts_models/en/ljspeech/vits"):
+    def __init__(self, config_file="config.yaml"):
         """
         Initialize the TextToSpeech class.
 
         Args:
-            device (str): The device to run the TTS model on, defaults to 'cuda'.
-            model_name (str): The name of the TTS model, defaults to a specific English model.
+            config_file (str): The path to the configuration file.
         """
+        # Load the configuration
+        with open(config_file, 'r') as file:
+            config = yaml.safe_load(file)
+
+        model_name = config["AudioGeneration"]["model"]
+        device = config["AudioGeneration"]["device"]
+
         try:
             self.device = device
             self.TTS = TTS(model_name=model_name, progress_bar=True).to(self.device)
             logging.info(f"Initialized TextToSpeech with device={device} and model_name={model_name}")
         except Exception as e:
-            logging.error(f"Failed to initialize TextToSpeech: {e}")
-            raise
+            logging.error(f"Failed to initialize TextToSpeech with CUDA: {e}")
+            logging.info("Fallback to CPU")
+            self.device = 'cpu'
+            self.TTS = TTS(model_name=model_name, progress_bar=True).to(self.device)
 
     def text_to_speech(self, text):
         """

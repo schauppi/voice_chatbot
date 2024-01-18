@@ -18,9 +18,9 @@ class Transcriber:
         with open(config_file, 'r') as file:
             config = yaml.safe_load(file)
 
-        model_name = config["Transcriber"]["model"]
-        device = config["Transcriber"]["device"]
-        compute_type = config["Transcriber"]["compute_type"]
+        model_name = config["Transcription"]["model"]
+        device = config["Transcription"]["device"]
+        compute_type = config["Transcription"]["compute_type"]
 
         try:
             self.model = WhisperModel(model_name, device=device, compute_type=compute_type)

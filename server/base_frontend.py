@@ -1,10 +1,12 @@
 import gradio as gr
 import requests
 import logging
+import argparse
+import yaml
 from Chatbot_Handler import ChatbotHandler
 
 class FrontEnd:
-    def __init__(self, server="http://127.0.0.1:5000"):
+    def __init__(self, config_file):
         """
         Initialize the FrontEnd class.
 
@@ -12,8 +14,15 @@ class FrontEnd:
             server (str): The server URL.
 
         """
+
+        with open(config_file, 'r') as file:
+            config = yaml.safe_load(file)
+
+        server = config["Frontend"]["server_url"]
+        context = config["Chatbot"]["context"]
+
         self.server = server
-        self.chatbot_handler = ChatbotHandler(self.server + "/chat")
+        self.chatbot_handler = ChatbotHandler(self.server + "/chat",context)
 
         logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -180,5 +189,9 @@ class FrontEnd:
         demo.launch(debug=True)
 
 if __name__ == "__main__":
-    frontend = FrontEnd()
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('--config', type=str, help='The path to the config file')
+    args = parser.parse_args()
+    config_path = args.config
+    frontend = FrontEnd(config_path)
     frontend.run()
