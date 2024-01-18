@@ -18,11 +18,9 @@ class Transcriber:
         with open(config_file, 'r') as file:
             config = yaml.safe_load(file)
 
-        transcription_config = config.get('Transcription', {})
-
-        model_name = transcription_config.get('model_name', 'base.en')
-        device = transcription_config.get('device', 'cuda')
-        compute_type = transcription_config.get('compute_type', 'int8_float16')
+        model_name = config["Transcriber"]["model"]
+        device = config["Transcriber"]["device"]
+        compute_type = config["Transcriber"]["compute_type"]
 
         try:
             self.model = WhisperModel(model_name, device=device, compute_type=compute_type)

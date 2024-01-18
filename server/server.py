@@ -8,19 +8,23 @@ import io
 import soundfile as sf
 from werkzeug.datastructures import FileStorage
 from io import BytesIO
+import argparse
 
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument('--config', type=str, help='The path to the config file')
+args = parser.parse_args()
+config_path = args.config
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 app = Flask(__name__)
 
-
 try:
     logging.info("Initializing TextToSpeech and Transcriber models...")
     tts = TextToSpeech()      
-    transcriber = Transcriber() 
-    chatbot = Chatbot("http://localhost:11434/api/chat")
+    transcriber = Transcriber(config_path) 
+    chatbot = Chatbot(config_path)
     logging.info("Models loaded successfully.")
 except Exception as e:
     logging.error(f"Failed to initialize models: {e}")

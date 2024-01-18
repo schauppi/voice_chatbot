@@ -3,7 +3,10 @@ whisperRecognition:
   lang: "en"
 
 Transcription:
-  model_name: "base.en"
+  model: "base.en"
   device: "cuda"
   compute_type: "int8_float16"
 
+Chatbot:
+  url: "http://localhost:11434/api/chat"
+  model: "mistral"
