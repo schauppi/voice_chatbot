@@ -1,4 +1,5 @@
 import logging
+import yaml
 from faster_whisper import WhisperModel
 import tempfile
 
@@ -6,21 +7,30 @@ import tempfile
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class Transcriber:
-    def __init__(self, model_name="base.en", device="cuda", compute_type="int8_float16"):
+    def __init__(self, config_file="config.yaml"):
         """
         Initialize the Transcriber class with a WhisperModel.
 
         Args:
-            model_name (str): The name of the Whisper model to use, defaults to 'base.en'.
-            device (str): The device to run the model on, defaults to 'cuda'.
-            compute_type (str): The compute type for the model, defaults to 'int8_float16'.
+            config_file (str): The path to the configuration file.
         """
+        # Load the configuration
+        with open(config_file, 'r') as file:
+            config = yaml.safe_load(file)
+
+        transcription_config = config.get('Transcription', {})
+
+        model_name = transcription_config.get('model_name', 'base.en')
+        device = transcription_config.get('device', 'cuda')
+        compute_type = transcription_config.get('compute_type', 'int8_float16')
+
         try:
             self.model = WhisperModel(model_name, device=device, compute_type=compute_type)
             logging.info(f"Initialized WhisperModel with model={model_name}, device={device}, compute_type={compute_type}")
         except Exception as e:
-            logging.error(f"Failed to initialize WhisperModel: {e}")
-            raise
+            logging.error(f"Failed to initialize WhisperModel with CUDA: {e}")
+            logging.info("Fallback to CPU")
+            self.model = WhisperModel(model_name, device='cpu', compute_type=compute_type)
 
     def transcribe(self, file):
         """
@@ -38,7 +48,7 @@ class Transcriber:
                 temp.write(file.read())
                 temp.flush()
 
-                segments, info = self.model.transcribe(temp.name)
+                segments = self.model.transcribe(temp.name)
                 logging.info("Successfully transcribed the audio file")
 
                 text = [segment.text for segment in segments]
@@ -46,9 +56,3 @@ class Transcriber:
         except Exception as e:
             logging.error(f"Failed to transcribe audio: {e}")
             raise
-
-# Example usage
-# transcriber = Transcriber()
-# file_path = "/home/js/workspace/voice_chatbot/data/lisbo.wav"
-# transcribed_text = transcriber.transcribe(file_path)
-# print(transcribed_text)

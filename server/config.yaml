@@ -2,9 +2,8 @@ whisperRecognition:
   modelPath: "whisper/base.en.pt"
   lang: "en"
 
-ollama:
-  url: "http://localhost:11434/api/generate"
-  model: "mistral:latest"
+Transcription:
+  model_name: "base.en"
+  device: "cuda"
+  compute_type: "int8_float16"
 
-conversation:
-  greeting: "Hi, how can I help you?"
