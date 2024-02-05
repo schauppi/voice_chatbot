@@ -142,7 +142,7 @@ spacy==3.7.2
 spacy-legacy==3.0.12
 spacy-loggers==1.0.5
 srsly==2.4.8
-starlette==0.35.1
+starlette==0.36.2
 SudachiDict-core==20230927
 SudachiPy==0.6.8
 sympy==1.12
